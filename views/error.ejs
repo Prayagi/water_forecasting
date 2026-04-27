@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Error - Aqua Forecast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --deep-ocean: #0a1628;
+      --accent-blue: #4a9fd4;
+      --glacial: #d4eef9;
+      --white: #ffffff;
+      --error: #ff6b6b;
+    }
+    html, body { width: 100%; min-height: 100vh; overflow-x: hidden; font-family: 'Raleway', sans-serif; }
+
+    .ocean-bg {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #0a1628 0%, #0d2444 30%, #1a3a6e 60%, #0f2a50 80%, #091220 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 100px 20px 50px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .error-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .error-icon {
+      font-size: 4rem;
+      color: var(--error);
+      margin-bottom: 20px;
+    }
+
+    .error-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      color: var(--deep-ocean);
+      margin-bottom: 20px;
+    }
+
+    .error-message {
+      color: #666;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #2c5aa0);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(74,159,212,0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.9);
+      color: var(--deep-ocean);
+      border: 2px solid var(--error);
+    }
+
+    .btn-secondary:hover {
+      background: var(--error);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 80px 15px 30px;
+      }
+      .error-card {
+        padding: 25px;
+      }
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      .action-btn {
+        width: 200px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ocean-bg">
+    <div class="container">
+      <div class="error-card">
+        <div class="error-icon">⚠️</div>
+        <h1 class="error-title">Oops! Something went wrong</h1>
+        <p class="error-message"><%= error %></p>
+
+        <div class="action-buttons">
+          <a href="/predict" class="action-btn btn-primary">Try Again</a>
+          <a href="/menu" class="action-btn btn-secondary">Back to Menu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
