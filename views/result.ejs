@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prediction Result - Aqua Forecast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --deep-ocean: #0a1628;
+      --accent-blue: #4a9fd4;
+      --glacial: #d4eef9;
+      --white: #ffffff;
+      --success: #4CAF50;
+    }
+    html, body { width: 100%; min-height: 100vh; overflow-x: hidden; font-family: 'Raleway', sans-serif; }
+
+    .ocean-bg {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #0a1628 0%, #0d2444 30%, #1a3a6e 60%, #0f2a50 80%, #091220 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 20px 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+
+    .back-button a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--accent-blue);
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      margin-bottom: 30px;
+    }
+
+    .result-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: var(--deep-ocean);
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .prediction-display {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .prediction-value {
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+      text-shadow: 0 2px 20px rgba(74,159,212,0.3);
+    }
+
+    .prediction-label {
+      font-size: 1.2rem;
+      color: var(--deep-ocean);
+      font-weight: 600;
+    }
+
+    .input-summary {
+      background: rgba(74,159,212,0.1);
+      border: 1px solid rgba(74,159,212,0.3);
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .summary-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--deep-ocean);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .summary-item {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-blue);
+    }
+
+    .summary-item strong {
+      color: var(--deep-ocean);
+      font-weight: 600;
+    }
+
+    .summary-item span {
+      color: #666;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #2c5aa0);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(74,159,212,0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.9);
+      color: var(--deep-ocean);
+      border: 2px solid var(--accent-blue);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-blue);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .insights-card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .insights-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: var(--deep-ocean);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .insights-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .insights-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      color: var(--deep-ocean);
+    }
+
+    .insights-list li:last-child {
+      border-bottom: none;
+    }
+
+    .insights-list .highlight {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 80px 15px 30px;
+      }
+      .result-card, .insights-card {
+        padding: 25px;
+      }
+      .prediction-value {
+        font-size: 3rem;
+      }
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      .action-btn {
+        width: 200px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ocean-bg">
+    <div class="back-button">
+      <a href="/predict">← Back to Form</a>
+    </div>
+
+    <div class="container">
+      <div class="result-card">
+        <h1 class="result-title">Prediction Result</h1>
+
+        <div class="prediction-display">
+          <div class="prediction-value"><%= prediction %></div>
+          <div class="prediction-label">Predicted Water Demand (Liters)</div>
+        </div>
+
+        <div class="input-summary">
+          <h3 class="summary-title">Input Parameters Summary</h3>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <strong>City:</strong> <span><%= inputData.city %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Temperature:</strong> <span><%= inputData.temperature %>°C</span>
+            </div>
+            <div class="summary-item">
+              <strong>Rainfall:</strong> <span><%= inputData.rainfall %>mm</span>
+            </div>
+            <div class="summary-item">
+              <strong>Population:</strong> <span><%= inputData.population %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Reservoir Level:</strong> <span><%= inputData.reservoirLevel %>%</span>
+            </div>
+            <div class="summary-item">
+              <strong>Water Tariff:</strong> <span>₹<%= inputData.waterTariff %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Holiday:</strong> <span><%= inputData.holiday %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Area Type:</strong> <span><%= inputData.areaType %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Weather:</strong> <span><%= inputData.weather %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Season:</strong> <span><%= inputData.season %></span>
+            </div>
+            <div class="summary-item">
+              <strong>Previous Day Demand:</strong> <span><%= inputData.lag1 %></span>
+            </div>
+            <div class="summary-item">
+              <strong>7 Days Ago Demand:</strong> <span><%= inputData.lag7 %></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="/predict" class="action-btn btn-primary">Make Another Prediction</a>
+          <a href="/menu" class="action-btn btn-secondary">Back to Menu</a>
+        </div>
+      </div>
+
+      <div class="insights-card">
+        <h3 class="insights-title">AI Insights & Recommendations</h3>
+        <ul class="insights-list">
+          <li>Based on the current parameters, the AI model predicts a water demand of <span class="highlight"><%= prediction %> liters</span> for the specified conditions.</li>
+          <li>Consider the <span class="highlight">season (<%= inputData.season %>)</span> and <span class="highlight">weather (<%= inputData.weather %>)</span> factors which significantly impact water usage patterns.</li>
+          <li>The <span class="highlight">reservoir level (<%= inputData.reservoirLevel %>%)</span> and <span class="highlight">population (<%= inputData.population %>)</span> are key factors in this prediction.</li>
+          <li>Use this prediction to optimize water distribution and plan resource allocation effectively.</li>
+          <li>Regular monitoring and updated predictions can help prevent water shortages and ensure sustainable management.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

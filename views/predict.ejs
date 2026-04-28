@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Water Demand Prediction - Aqua Forecast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/CSS_File/predict.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --deep-ocean: #0a1628;
+      --accent-blue: #4a9fd4;
+      --glacial: #d4eef9;
+      --white: #ffffff;
+      --error: #ff6b6b;
+    }
+    html, body { width: 100%; min-height: 100vh; overflow-x: hidden; font-family: 'Raleway', sans-serif; }
+
+    .ocean-bg {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #0a1628 0%, #0d2444 30%, #1a3a6e 60%, #0f2a50 80%, #091220 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 20px 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+
+    .back-button a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--accent-blue);
+    }
+
+    .form-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .form-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: var(--deep-ocean);
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--deep-ocean);
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(74,159,212,0.1);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--accent-blue), #2c5aa0);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(74,159,212,0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .info-text {
+      background: rgba(74,159,212,0.1);
+      border: 1px solid rgba(74,159,212,0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: var(--deep-ocean);
+    }
+
+    .info-text strong {
+      color: var(--accent-blue);
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 80px 15px 30px;
+      }
+      .form-card {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ocean-bg">
+    <div class="back-button">
+      <a href="/menu">← Back to Menu</a>
+    </div>
+
+    <div class="container">
+      <div class="form-card">
+        <h1 class="form-title">Water Demand Prediction</h1>
+
+        <div class="info-text">
+          <strong>Instructions:</strong> Fill in all the parameters below to get an AI-powered prediction of water demand for your selected location and conditions.
+        </div>
+
+        <form action="/predict" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="temperature">Temperature (°C)</label>
+              <input type="number" step="0.1" id="temperature" name="temperature" required>
+            </div>
+            <div class="form-group">
+              <label for="rainfall">Rainfall (mm)</label>
+              <input type="number" step="0.1" id="rainfall" name="rainfall" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="population">Population</label>
+              <input type="number" id="population" name="population" required>
+            </div>
+            <div class="form-group">
+              <label for="reservoirLevel">Reservoir Level (%)</label>
+              <input type="number" step="0.1" min="0" max="100" id="reservoirLevel" name="reservoirLevel" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="waterTariff">Water Tariff (₹/unit)</label>
+              <input type="number" step="0.1" id="waterTariff" name="waterTariff" required>
+            </div>
+            <div class="form-group">
+              <label for="holiday">Is it a Holiday?</label>
+              <select id="holiday" name="holiday" required>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="lag1">Previous Day Demand (lag_1)</label>
+              <input type="number" step="0.1" id="lag1" name="lag1" required>
+            </div>
+            <div class="form-group">
+              <label for="lag7">7 Days Ago Demand (lag_7)</label>
+              <input type="number" step="0.1" id="lag7" name="lag7" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City</label>
+              <select id="city" name="city" required>
+                <option value="Bhopal">Bhopal</option>
+                <option value="Gwalior">Gwalior</option>
+                <option value="Indore">Indore</option>
+                <option value="Jabalpur">Jabalpur</option>
+                <option value="Ujjain">Ujjain</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="areaType">Area Type</label>
+              <select id="areaType" name="areaType" required>
+                <option value="Urban">Urban</option>
+                <option value="Rural">Rural</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="weather">Weather</label>
+              <select id="weather" name="weather" required>
+                <option value="Sunny">Sunny</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Rainy">Rainy</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="season">Season</label>
+              <select id="season" name="season" required>
+                <option value="Summer">Summer</option>
+                <option value="Monsoon">Monsoon</option>
+                <option value="Winter">Winter</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Get Prediction</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
