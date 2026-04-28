@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 // Dashboard route (button ke baad ye open hoga)
 app.get('/menu', (req, res) => {
-    res. render('menu.ejs');
+    res.render('menu.ejs');
 });
 
  app.listen(3000, () => {
