@@ -1,6 +1,6 @@
-# 💧 Aqua Forecast — AI-Powered Water Resource Management System
+# 💧 Aqua Forecast - AI-Powered Water Resource Management System
 
-> A full-stack web application that leverages Machine Learning to predict water demand, reservoir capacity, and sector-wise risk assessment — empowering sustainable water management decisions.
+> A full-stack web application that leverages Machine Learning to predict water demand, reservoir capacity, and sector-wise risk assessment - empowering sustainable water management decisions.
 
 ---
 
@@ -27,7 +27,7 @@
 
 **Aqua Forecast** is a Minor Project that combines a modern web interface with multiple Machine Learning models to provide intelligent predictions related to water resource management. The system helps urban planners, water authorities, and researchers make data-driven decisions about water supply, reservoir management, and sector-level risk evaluation.
 
-The application features a sleek ocean-themed UI with dynamic rain animations, glassmorphism design elements, and three core prediction modules — each powered by a dedicated ML model running as a separate Flask microservice.
+The application features a sleek ocean-themed UI with dynamic rain animations, glassmorphism design elements, and three core prediction modules , each powered by a dedicated ML model running as a separate Flask microservice.
 
 ---
 
