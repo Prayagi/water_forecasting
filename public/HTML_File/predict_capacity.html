@@ -61,7 +61,7 @@
 <body>
     <div class="ocean-bg">
         <div style="max-width: 600px; margin: 0 auto;">
-            <a href="menu.html" class="back-link">← Back to Menu</a>
+            <a href="/" class="back-link">← Back to Menu</a>
         </div>
         <div class="container">
             <h2>Reservoir Capacity Prediction</h2>
@@ -116,7 +116,7 @@
         };
 
         try {
-            const response = await fetch("http://127.0.0.1:8080/predict_capacity", {
+            const response = await fetch("/predict_capacity", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

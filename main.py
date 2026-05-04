@@ -38,7 +38,7 @@ def load_model(path):
 # -------------------------------
 # Paths & Model Loading
 # -------------------------------
-BASE_DIR = os.path.join(os.getcwd(), "project_model")
+BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "project_model")
 
 # Water Model
 water_model_path = os.path.join(BASE_DIR, "WaterDemandPrediction_Model", "water_model.pkl")
@@ -106,7 +106,23 @@ def home():
 
 @app.get('/')
 def read_root():
+    return FileResponse('public/HTML_File/index.html')
+
+@app.get('/menu.html')
+def menu_page():
     return FileResponse('public/HTML_File/menu.html')
+
+@app.get('/predict_capacity.html')
+def predict_capacity_page():
+    return FileResponse('public/HTML_File/predict_capacity.html')
+
+@app.get('/predict_water_demand.html')
+def predict_water_demand_page():
+    return FileResponse('public/HTML_File/predict_water_demand.html')
+
+@app.get('/predict_sector_risk.html')
+def predict_sector_risk_page():
+    return FileResponse('public/HTML_File/predict_sector_risk.html')
 # --- Water Prediction ---
 @app.post("/predict_water")
 async def predict_water(data: WaterDemandInput):
