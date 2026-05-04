@@ -23,16 +23,17 @@ app.add_middleware(
 # Helper: Safe Model Loading
 # -------------------------------
 def load_model(path):
+    abs_path = os.path.abspath(path)
     try:
-        if os.path.exists(path):
-            model = joblib.load(path)
-            print(f"✅ Loaded model: {path}")
+        if os.path.exists(abs_path):
+            model = joblib.load(abs_path)
+            print(f"✅ Loaded model from: {abs_path}")
             return model
         else:
-            print(f"⚠️ Model NOT found: {path}")
+            print(f"⚠️ Model NOT found at: {abs_path}")
             return None
     except Exception as e:
-        print(f"❌ Error loading {path}: {e}")
+        print(f"❌ Error loading {abs_path}: {e}")
         return None
 
 # -------------------------------
@@ -198,4 +199,5 @@ async def predict_capacity(data: CapacityInput):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)

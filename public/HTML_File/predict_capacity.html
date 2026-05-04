@@ -125,19 +125,20 @@
             if (!response.ok) throw new Error("Server response was not ok.");
 
             const result = await response.json();
-            const percentage = result.predicted_capacity_percentage;
-            
-            resDiv.innerHTML = `Predicted Capacity: <span style="color:#fff">${percentage}%</span>`;
-            
-            progressContainer.style.display = "block";
-            // slight delay to allow CSS transition to play
-            setTimeout(() => {
-                progressBar.style.width = percentage + "%";
-                // Color formatting based on percentage
-                if(percentage < 30) progressBar.style.background = "linear-gradient(90deg, #ff4d4d, #cc0000)";
-                else if (percentage < 70) progressBar.style.background = "linear-gradient(90deg, #ffa64d, #cc6600)";
-                else progressBar.style.background = "linear-gradient(90deg, #4a9fd4, #2a6db5)";
-            }, 50);
+            if (result.error) {
+                resDiv.innerHTML = `<span style="color:#ff6b6b">❌ Error: ${result.error}</span>`;
+            } else {
+                const percentage = result.predicted_capacity_percentage;
+                resDiv.innerHTML = `Predicted Capacity: <span style="color:#fff">${percentage}%</span>`;
+                
+                progressContainer.style.display = "block";
+                setTimeout(() => {
+                    progressBar.style.width = percentage + "%";
+                    if(percentage < 30) progressBar.style.background = "linear-gradient(90deg, #ff4d4d, #cc0000)";
+                    else if (percentage < 70) progressBar.style.background = "linear-gradient(90deg, #ffa64d, #cc6600)";
+                    else progressBar.style.background = "linear-gradient(90deg, #4a9fd4, #2a6db5)";
+                }, 50);
+            }
 
         } catch (error) {
             resDiv.innerHTML = `<span style="color:#ff6b6b">❌ Error connecting to prediction server. Is the capacity_model Flask app running on port 5002?</span>`;

@@ -118,16 +118,19 @@
             if (!response.ok) throw new Error("Server response was not ok.");
 
             const result = await response.json();
-            
-            let riskClass = "";
-            if(result.risk_level === "High Risk") riskClass = "risk-high";
-            else if(result.risk_level === "Medium Risk") riskClass = "risk-medium";
-            else riskClass = "risk-low";
+            if (result.error) {
+                resDiv.innerHTML = `<span style="color:#ff6b6b">❌ Error: ${result.error}</span>`;
+            } else {
+                let riskClass = "";
+                if(result.risk_level === "High Risk") riskClass = "risk-high";
+                else if(result.risk_level === "Medium Risk") riskClass = "risk-medium";
+                else riskClass = "risk-low";
 
-            resDiv.innerHTML = `
-                Predicted Demand: <span style="color:#fff">${result.predicted_demand.toLocaleString()} units</span><br>
-                Sector Risk Level: <span class="${riskClass}">${result.risk_level}</span>
-            `;
+                resDiv.innerHTML = `
+                    Predicted Demand: <span style="color:#fff">${result.predicted_demand.toLocaleString()} units</span><br>
+                    Sector Risk Level: <span class="${riskClass}">${result.risk_level}</span>
+                `;
+            }
         } catch (error) {
             resDiv.innerHTML = `<span style="color:#ff6b6b">❌ Error connecting to assessment server. Is the sector_model Flask app running on port 5001?</span>`;
         } finally {
