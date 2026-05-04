@@ -26,6 +26,12 @@ def load_model(path):
     abs_path = os.path.abspath(path)
     try:
         if os.path.exists(abs_path):
+            size = os.path.getsize(abs_path)
+            print(f"DEBUG: File {abs_path} exists. Size: {size} bytes")
+            
+            if size < 1000:
+                print(f"🚨 WARNING: {abs_path} is very small ({size} bytes). It might be a Git LFS pointer instead of the actual model!")
+            
             model = joblib.load(abs_path)
             print(f"✅ Loaded model from: {abs_path}")
             return model
